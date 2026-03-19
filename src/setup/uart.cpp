@@ -19,19 +19,25 @@ void uart_init() {
 
     SETBIT(UCSR0B, RXEN0);
     SETBIT(UCSR0B, TXEN0);
-   // SETBIT(UCSR0B, RXCIE0); // Enable RX complete interrupt
+    // SETBIT(UCSR0B, RXCIE0); // Enable RX complete interrupt
 
+    // Set UART protocol to be asynchronous
     CLRBIT(UCSR0C, UMSEL01);
     CLRBIT(UCSR0C, UMSEL00);
-
+    
+    // Disable PARITY bit
     CLRBIT(UCSR0C, UPM01);
     CLRBIT(UCSR0C, UPM00);
-
+    
+    // Set data to 8-bit 
     CLRBIT(UCSR0B, UCSZ02);
     SETBIT(UCSR0C, UCSZ01);
     SETBIT(UCSR0C, UCSZ00);
 
-    SETBIT(UCSR0A, U2X0);
+    // reduce the divisor of the baud rate divider from 16 to 8 
+    // effectively doubling the transfer rate for asynchronous communication
+    SETBIT(UCSR0A, U2X0); 
+    
     UBRR0H = (MYUBRRF) >> 8;
     UBRR0L = (MYUBRRF);
 
