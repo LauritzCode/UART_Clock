@@ -1,8 +1,9 @@
 #pragma once
 #include <stdint.h>
 
+extern volatile char rxBuf[];
+extern volatile uint8_t rxIndex;
 extern volatile uint8_t receiveFlag;
-extern volatile uint8_t receivedByte;
 
 void uart_init();
 unsigned char USART_Receive(void);

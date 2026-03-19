@@ -18,15 +18,14 @@ int main(void) {
     clear_display();
     interrupt_init();
     uart_init();
-
-    char buf[16];
+    sei();
     int hh, mm, ss;
 
     uart_print("Skriv tid som hh:mm:ss\r\n");
-   // print_centered("Skriv tid som", 2);
-   // print_centered("hh:mm:ss", 3);
-    uart_receive_string(buf, sizeof(buf));
-    sscanf(buf, "%d:%d:%d", &hh, &mm, &ss);
+
+    while (!receiveFlag);  // wait for ISR to complete the string
+    receiveFlag = 0;
+    sscanf((const char *)rxBuf, "%d:%d:%d", &hh, &mm, &ss);
 
     while (1) {
         char time_str[9];
